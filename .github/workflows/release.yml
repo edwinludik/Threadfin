@@ -26,6 +26,7 @@ jobs:
          env GOOS=linux GOARCH=arm64 go build -o dist/Threadfin_linux_arm64
          env GOOS=linux GOARCH=arm go build -o dist/Threadfin_linux_arm
          env GOOS=linux GOARCH=amd64 go build -o dist/Threadfin_linux_amd64
+         env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o dist/Threadfin_linux_amd64_static -a -ldflags '-extldflags "-static"'
          echo "Building FreeBSD"
          env GOOS=freebsd GOARCH=amd64 go build -o dist/Threadfin_freebsd_amd64
          env GOOS=freebsd GOARCH=arm go build -o dist/Threadfin_freebsd_arm
