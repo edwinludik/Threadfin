@@ -16,6 +16,12 @@ jobs:
         with:
           go-version: 1.22
         id: go
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::$(date +'%Y.%m.%d_%H-%M')"
+
       - name: Build Binaries
         run: |
           go mod tidy && go mod vendor
@@ -23,10 +29,10 @@ jobs:
           env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o dist/Threadfin_linux_amd64_static -a -ldflags '-extldflags "-static"'
           echo "Building FreeBSD"
 
-
       - name: Release
         uses: "ModeSevenIndustrialSolutions/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.tag.outputs.release_tag }}"
           prerelease: false
           files: dist/*
