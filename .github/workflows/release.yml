@@ -28,23 +28,8 @@ jobs:
           echo "Building all platforms in parallel"
           
           # Linux builds
-          env GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o dist/Threadfin_linux_arm64 &
-          env GOOS=linux GOARCH=arm go build -ldflags="-s -w" -o dist/Threadfin_linux_arm &
-          env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o dist/Threadfin_linux_amd64 &
-          
-          # FreeBSD builds
-          env GOOS=freebsd GOARCH=amd64 go build -ldflags="-s -w" -o dist/Threadfin_freebsd_amd64 &
-          env GOOS=freebsd GOARCH=arm go build -ldflags="-s -w" -o dist/Threadfin_freebsd_arm &
-          
-          # macOS builds
-          env GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o dist/Threadfin_darwin_arm64 &
-          env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o dist/Threadfin_darwin_amd64 &
-          
-          # Windows build
-          env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o dist/Threadfin_windows_amd64.exe &
-          
-          # Wait for all background jobs to finish
-          wait
+          echo "Building Linux (static linked)"
+          env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o dist/Threadfin_linux_amd64 -a -ldflags '-extldflags "-static"'
           
           # List all built binaries
           ls -la dist/
